@@ -24,4 +24,5 @@ javadoc {
     destinationDir = file('docs')
     title = "Lab5"
 }
+
 // vim: ts=4:sw=4:et:ft=groovy
