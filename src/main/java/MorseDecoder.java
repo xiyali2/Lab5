@@ -26,7 +26,10 @@ import java.util.Scanner;
  */
 public class MorseDecoder {
 
-    /** Bin size for power binning. We compute power over bins of this size. */
+    /**
+     * Bin size for power binning. We compute power over bins of this size. You will probably not
+     * need to modify this value.
+     */
     private static final int BIN_SIZE = 100;
 
     /**
@@ -56,10 +59,10 @@ public class MorseDecoder {
         return returnBuffer;
     }
 
-    /** Power threshold for power or no power. */
+    /** Power threshold for power or no power. You may need to modify this value. */
     private static final double POWER_THRESHOLD = 10;
 
-    /** Bin threshold for dots or dashes. Related to BIN_SIZE. */
+    /** Bin threshold for dots or dashes. Related to BIN_SIZE. You may need to modify this value. */
     private static final int DASH_BIN_COUNT = 8;
 
     /**
