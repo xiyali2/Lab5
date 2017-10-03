@@ -77,6 +77,16 @@ public class MorseDecoder {
      * @return the Morse code string of dots, dashes, and spaces
      */
     private static String powerToDotDash(final double[] powerMeasurements) {
+        /*
+         * There are four conditions to handle. Symbols should only be output when you see
+         * transitions. You will also have to store how much power or silence you have seen.
+         */
+
+        // if ispower and waspower
+        // else if ispower and not waspower
+        // else if issilence and wassilence
+        // else if issilence and not wassilence
+
         return "";
     }
 
