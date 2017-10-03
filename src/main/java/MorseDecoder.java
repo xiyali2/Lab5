@@ -49,13 +49,25 @@ public class MorseDecoder {
          * We should check the results of getNumFrames to ensure that they are safe to cast to int.
          */
         int totalBinCount = (int) Math.ceil(inputFile.getNumFrames() / BIN_SIZE);
+        totalBinCount = Math.abs(totalBinCount);
         double[] returnBuffer = new double[totalBinCount];
 
         double[] sampleBuffer = new double[BIN_SIZE * inputFile.getNumChannels()];
         for (int binIndex = 0; binIndex < totalBinCount; binIndex++) {
             // Get the right number of samples from the inputFile
             // Sum all the samples together and store them in the returnBuffer
+            for (int sampIndex = 0; sampIndex < sampleBuffer.length; sampIndex++) {
+
+                returnBuffer[binIndex] = Math.abs(sampleBuffer[sampIndex]);
+
+            }
+
+
+
         }
+
+
+
         return returnBuffer;
     }
 
