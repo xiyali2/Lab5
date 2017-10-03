@@ -45,22 +45,47 @@ public class MorseDecoder {
     private static double[] binWavFilePower(final WavFile inputFile)
             throws IOException, WavFileException {
 
+
+
         /*
          * We should check the results of getNumFrames to ensure that they are safe to cast to int.
          */
         int totalBinCount = (int) Math.ceil(inputFile.getNumFrames() / BIN_SIZE);
-        totalBinCount = Math.abs(totalBinCount);
         double[] returnBuffer = new double[totalBinCount];
 
         double[] sampleBuffer = new double[BIN_SIZE * inputFile.getNumChannels()];
+
+       // for (int sampIndex = 0; sampIndex < sampleBuffer.length; sampIndex++) {
+
+           //sampleBuffer[sampIndex] = inputFile.readFrames(sampleBuffer, BIN_SIZE);
+
+
+
         for (int binIndex = 0; binIndex < totalBinCount; binIndex++) {
             // Get the right number of samples from the inputFile
             // Sum all the samples together and store them in the returnBuffer
-            for (int sampIndex = 0; sampIndex < sampleBuffer.length; sampIndex++) {
+            //for (int sampIndex = 0; sampIndex < sampleBuffer.length; sampIndex++) {
 
-                returnBuffer[binIndex] = Math.abs(sampleBuffer[sampIndex]);
+                //returnBuffer[binIndex] = Math.abs(sampleBuffer[sampIndex]);
+
+            //}
+
+            int framesRead = inputFile.readFrames(sampleBuffer, BIN_SIZE);
+            returnBuffer[binIndex] = 0;
+            for (int sampleCount = 0; sampleCount < sampleBuffer.length; sampleCount++) {
+
+                returnBuffer[binIndex] += Math.abs(sampleBuffer[sampleCount]);
+
 
             }
+
+            if (framesRead < BIN_SIZE && !(binIndex == totalBinCount - 1)) {
+
+                throw new WavFileException("short read from WAV File");
+
+            }
+
+
 
 
 
@@ -75,7 +100,7 @@ public class MorseDecoder {
     private static final double POWER_THRESHOLD = 10;
 
     /** Bin threshold for dots or dashes. Related to BIN_SIZE. You may need to modify this value. */
-    private static final int DASH_BIN_COUNT = 8;
+    private static final int DASH_BIN_COUNT = BIN_SIZE;
 
     /**
      * Convert power measurements to dots, dashes, and spaces.
@@ -99,7 +124,51 @@ public class MorseDecoder {
         // else if issilence and wassilence
         // else if issilence and not wassilence
 
-        return "";
+        //boolean ispower;
+        //boolean waspower;
+        //boolean issilence;
+        //boolean wassilence;
+
+        String returnMorseCode = "";
+
+        for (int binIndex = 1; binIndex < powerMeasurements.length - 1; binIndex++) {
+
+                  if ((powerMeasurements[binIndex] < POWER_THRESHOLD)
+                          &&
+                          (powerMeasurements[binIndex - 1] < POWER_THRESHOLD)) {
+
+                      returnMorseCode += "/n";
+
+                  } else if ((powerMeasurements[binIndex] < POWER_THRESHOLD)
+                          &&
+                          (powerMeasurements[binIndex - 1] > POWER_THRESHOLD)) {
+
+                      returnMorseCode += ".";
+
+                  } else if ((powerMeasurements[binIndex] > POWER_THRESHOLD)
+                          &&
+                          (powerMeasurements[binIndex - 1] < POWER_THRESHOLD)) {
+
+
+                      returnMorseCode += ".";
+
+                  } else if ((powerMeasurements[binIndex] > POWER_THRESHOLD)
+                          &&
+                          (powerMeasurements[binIndex - 1] > POWER_THRESHOLD)) {
+
+
+                      returnMorseCode += "-";
+                  }
+
+
+
+
+        }
+
+
+
+
+        return "returnMorseCode";
     }
 
     /**
